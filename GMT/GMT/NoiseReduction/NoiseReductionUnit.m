@@ -19,7 +19,7 @@
 %  *threshHold - hold threshold (onset detection criterion) [dB, > 0] [3]
 %  *durHold - hold duration (following onset) [s] [1.6]
 %  *maxAtt - maximum attenuation (applied for SNRs <= snrFloor) [dB] [-12]
-%  *noiseEstDecimation - down-sampling factor (re. frame rate) for noise estimate [int > 0] [1]  (firmware: 3)
+%  *noiseEstDecimation - down-sampling factor (re. frame rate) for noise estimate [int > 0] [1]
 %  *snrFloor - SNR below which the attenuation is clipped [dB] [-2]
 %  *snrCeil  - SNR above which the gain is clipped  [dB] [45]
 %  *snrSlope - SNR at which gain curve is steepest  [dB] [6.5]

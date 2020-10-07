@@ -103,7 +103,7 @@ par_nr = struct( ...
     'snrCeil', 45, ...          % SNR above which the gain is clipped  [dB] [45]
     'snrSlope', 6.5, ...        % SNR at which gain curve is steepest  [dB] [6.5]
     'slopeFact', 0.2, ...       % factor determining the steepness of the gain curve [> 0] [0.2]
-    'noiseEstDecimation', 1, ...    % down-sampling factor (re. frame rate) for noise estimate [int > 0] [1]  (firmware: 3)
+    'noiseEstDecimation', 1, ...    % down-sampling factor (re. frame rate) for noise estimate [int > 0] [1]
     'enableContinuous', false, ...  % save/restore states across repeated calls of run [bool] [false]
     'initState', struct('V_s', -30 * ones(15,1), 'V_n', -30 * ones(15,1)) ...    % initial state
     );
