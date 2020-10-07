@@ -1,4 +1,4 @@
-% This demo implements HiRes F120 (without Clearvoice) and computes the 
+% This demo implements SpecRes (without noise reduction) and computes the 
 % electrode output for some speech tokens.
 
 initGmtClassPath;

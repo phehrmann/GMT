@@ -1,5 +1,5 @@
 % This demo implements the exact same processing strategy as
-% demo3_F120_ClearVoice.m in a purely procedural style, i.e. avoiding
+% demo3_SpecRes_NR.m in a purely procedural style, i.e. avoiding
 % use of the object-oriented framework built around the core functionality
 % of each processing block. Corresponding lines from the object
 % oriented demo are quoted in comments.
@@ -84,14 +84,14 @@ par_hilbert = struct( ...
     'outputUpperBound', Inf ... % lower bound applied to output (after offset) [log2] [Inf]
     );
 
-% engy = ChannelEnergyUnit(strat, 'ENGY', 2);             % channel energies (for ClearVoice SNR estimation); 2 inputs (to account for AGC gain)
+% engy = ChannelEnergyUnit(strat, 'ENGY', 2);             % channel energies (for noise reduction SNR estimation); 2 inputs (to account for AGC gain)
 par_energy = struct( ...
     'parent', par_strat, ...
     'gainDomain', 'linear' ...  % domain of gain input (#2)  ['linear','db','log2']
     );
 
-% cv = ClearvoiceUnit(strat, 'CV', 1, 'log2', false);     % ClearVoice noise reduction; 'log2' makes gain output commensurable with Hilbert envelopes
-par_cv = struct( ...
+% nr = NoiseReductionUnit(strat, 'NR', 1, 'log2', false);     % noise reduction; 'log2' makes gain output commensurable with Hilbert envelopes
+par_nr = struct( ...
     'parent', par_strat,  ...
     'gainDomain', 'log2', ...   % domain of gain output on port 2 (if applicable) ['linear','db','log2'] ['linear']
     'tau_speech', 0.0258, ...   % time constant of speech estimator [s] [0.0258]
@@ -108,9 +108,8 @@ par_cv = struct( ...
     'initState', struct('V_s', -30 * ones(15,1), 'V_n', -30 * ones(15,1)) ...    % initial state
     );
 
-% gapp = ElementwiseUnit(strat, 'GAPP', 2, @plus, true);  % CV gain application: element-by-element sum of 2 input;
+% gapp = ElementwiseUnit(strat, 'GAPP', 2, @plus, true);  % NR gain application: element-by-element sum of 2 input;
 %  (no corresponding parameter struct, addition handled in the function call section below)
-
 
 % spl = SpecPeakLocatorUnit(strat, 'SPL');                % channel peak frequency and target location estimation
 par_peak = struct( ...
@@ -192,8 +191,8 @@ sig_frm_fft                             = fftFilterbankFunc(par_fft, sig_frm_aud
 
 sig_frm_hilbert                         = hilbertEnvelopeFunc(par_hilbert, sig_frm_fft); % Hilbert envelopes
 sig_frm_energy                          = channelEnergyFunc(par_energy, sig_frm_fft, sig_smp_gainAgc); % channel energy estimates
-sig_frm_gainCv                          = clearvoiceFunc(par_cv, sig_frm_energy); % Clearvoice noise reduction
-sig_frm_hilbertMod                      = sig_frm_hilbert + sig_frm_gainCv; % apply noise reduction gains to envelopes
+sig_frm_gainNr                          = noiseReductionFunc(par_nr, sig_frm_energy); % noise reduction
+sig_frm_hilbertMod                      = sig_frm_hilbert + sig_frm_gainNr; % apply noise reduction gains to envelopes
 
 %   sub-sample every third FFT input frame
 sig_3frm_fft = sig_frm_fft(:,3:3:end);    
