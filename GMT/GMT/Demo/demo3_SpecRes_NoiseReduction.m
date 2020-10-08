@@ -4,10 +4,10 @@ initGmtClassPath;
 
 %% Create strategy
 strat = FftStrategy(); % AzBio_3sent.wav is assigned as default sound input, use line below to load other files
-% strat.wavFile = 'YOUR FILE NAME HERE.wav'
+strat.wavFile = 'AzBio_3sent_65dBSPL.wav';  % same as default, but scaled to 65dB SPL RMS assuming 111.6dB 
 %% Create instances of ProcUnits and add them to strategy
 src = ReadWavUnit(strat, 'SRC');  % use wav file as input
-mix = AudioMixerUnit(strat, 'MIX', 1, 65, 'rms', 111.6);   % 1 inputs, 65dB dB SPL RMS, assuming full-scale level 111.6 dB SPL
+mix = AudioMixerUnit(strat, 'MIX', 1, 0, 'rel');        % 1 input, no re-scaling, assuming correct scaling in input wav file (parameters: 0 dB rel. to input)
 
 pre = HarmonyPreemphasisUnit(strat, 'PRE');             % pre-emphasis filter
 agc = DualLoopTdAgcUnit(strat, 'AGC');                  % AGC 
